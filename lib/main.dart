@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:study/pages/first_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,30 +14,7 @@ List names = ["jamie", "nish", "henry"];
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:Scaffold(
-        appBar: AppBar(
-          title: Text("Study"),
-          backgroundColor: Colors.orangeAccent,
-          elevation: 0,
-          leading: Icon(Icons.menu),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
-          ),
-
-        body: Center(
-          child: GestureDetector(
-            onTap:() {
-              //something will happen here
-              print("hi");
-            },
-            child: Container(
-              height: 300,
-              width: 300,
-              color: Colors.green,
-              child: Center(child: Text("Tap Me!")),
-              ),
-          ),
-        )
-          )
+      home: FirstPage(),
       );
   }
 }
