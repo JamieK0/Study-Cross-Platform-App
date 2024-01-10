@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home:Scaffold(
-        backgroundColor: Colors.blue[300],
         appBar: AppBar(
           title: Text("Study"),
           backgroundColor: Colors.orangeAccent,
@@ -21,22 +20,27 @@ class MyApp extends StatelessWidget {
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
           ),
 
-        body: Center(
-          child: Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-              color: Colors.orangeAccent[700],
-              //curving the corners
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: EdgeInsets.all(25),
-            child: Icon(Icons.favorite,
-            color: Colors.white,
-            size: 64
-            )
-            
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // 1st box
+            Container(
+              height: 200, 
+              width: 200, 
+              color: Colors.teal,
+              ),
+            // 2nd box
+            Container(
+              height: 200, 
+              width: 200, 
+              color: Colors.teal[100],
+              ),
+            // 3rd box
+            Container(
+              height: 200, 
+              width: 200, 
+              color: Colors.teal[50],)
+          ],
         )
       ),
     );
