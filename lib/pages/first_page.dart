@@ -67,7 +67,7 @@ final List _pages = [
         )
       ),
       appBar: AppBar(
-        title: Text("Page 1"),
+        title: Text("Study"),
         backgroundColor: Colors.blue[100],
         ),
       body: _pages[_selectedIndex],
