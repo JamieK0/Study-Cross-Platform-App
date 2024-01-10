@@ -7,6 +7,8 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+List names = ["jamie", "nish", "henry"];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,27 +22,12 @@ class MyApp extends StatelessWidget {
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
           ),
 
-        body: ListView(
-          children: [
-            // 1st box
-            Container(
-              height: 350, 
-              width: 200, 
-              color: Colors.teal,
-              ),
-            // 2nd box
-            Container(
-              height: 350, 
-              width: 200, 
-              color: Colors.teal[100],
-              ),
-            // 3rd box
-            Container(
-              height: 350, 
-              width: 200, 
-              color: Colors.teal[50],)
-          ],
-        )
+        body: ListView.builder(
+          itemCount: names.length,
+          itemBuilder: (context, index) => ListTile(
+            title: Text(names[index]),
+          )
+          )
       ),
     );
   }
