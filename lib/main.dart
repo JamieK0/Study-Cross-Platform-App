@@ -22,13 +22,26 @@ List names = ["jamie", "nish", "henry"];
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
           ),
 
-        body: GridView.builder(
-          itemCount: 64,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4), 
-          itemBuilder: ((context, index) => Container(
-            color: Colors.deepPurple,
-            margin: EdgeInsets.all(2),))
-      ),
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 300,
+              width: 300,
+              color: Colors.deepOrange,
+            ),
+            Container(
+              height: 200,
+              width: 200,
+              color: Colors.deepOrange[300],
+            ),
+            Container(
+              height: 100,
+              width: 100,
+              color: Colors.deepOrange[200],
+            ),
+            
+          ])
       )
     );
   }
