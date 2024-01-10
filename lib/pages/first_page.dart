@@ -21,6 +21,8 @@ class FirstPage extends StatelessWidget {
                 leading: Icon(Icons.home),
                 title: Text("Home"),
                 onTap: () {
+                  //Removes drawer
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/homepage');
                 }
               ),
@@ -28,6 +30,8 @@ class FirstPage extends StatelessWidget {
                 leading: Icon(Icons.settings),
                 title: Text("Settings"),
                 onTap: () {
+                  //Removes drawer
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/settingspage');
                 }
               )
