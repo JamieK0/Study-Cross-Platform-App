@@ -22,27 +22,21 @@ List names = ["jamie", "nish", "henry"];
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.logout))],
           ),
 
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
+        body: Center(
+          child: GestureDetector(
+            onTap:() {
+              //something will happen here
+              print("hi");
+            },
+            child: Container(
               height: 300,
               width: 300,
-              color: Colors.deepOrange,
-            ),
-            Container(
-              height: 200,
-              width: 200,
-              color: Colors.deepOrange[300],
-            ),
-            Container(
-              height: 100,
-              width: 100,
-              color: Colors.deepOrange[200],
-            ),
-            
-          ])
-      )
-    );
+              color: Colors.green,
+              child: Center(child: Text("Tap Me!")),
+              ),
+          ),
+        )
+          )
+      );
   }
 }
