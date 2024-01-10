@@ -21,25 +21,26 @@ class MyApp extends StatelessWidget {
           ),
 
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             // 1st box
-            Container(
-              height: 200, 
-              width: 200, 
-              color: Colors.teal,
-              ),
+            Expanded(
+              child: Container(
+                color: Colors.teal,
+                ),
+            ),
             // 2nd box
-            Container(
-              height: 200, 
-              width: 200, 
-              color: Colors.teal[100],
-              ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.teal[100],
+                ),
+            ),
             // 3rd box
-            Container(
-              height: 200, 
-              width: 200, 
-              color: Colors.teal[50],)
+            Expanded(
+              child: Container(
+                color: Colors.teal[50],),
+            )
           ],
         )
       ),
