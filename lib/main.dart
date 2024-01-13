@@ -30,7 +30,6 @@ List names = ["jamie", "nish", "henry"];
         '/firstpage' : (context) => FirstPage(),
         '/homepage' : (context) => HomePage(),
         '/settingspage' :(context) => SettingsPage(),
-        '/loginpage' : (context) => LoginPage(),
         '/authpage' :(context) => AuthPage(),
       }
       );
