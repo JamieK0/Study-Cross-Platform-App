@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study/components/default_button.dart';
 import 'package:study/components/login_text_field.dart';
+import 'package:study/services/auth_service.dart';
 
 class registerPage extends StatefulWidget {
   // sign up button function
@@ -80,7 +81,6 @@ class _registerPageState extends State<registerPage> {
     );
   }
 
-  void signInGoogle() {}
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +190,7 @@ class _registerPageState extends State<registerPage> {
                   // sign in with google
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     GestureDetector(
-                      onTap: signInGoogle,
+                      onTap: () => AuthService().signInWithGoogle(),
                       child: Image.asset(
                         'lib/images/google-signin-assets/iOS/png@4x/neutral/ios_neutral_sq_ctn@4x.png',
                         height: 62,
