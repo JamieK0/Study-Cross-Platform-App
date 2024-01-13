@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                   // username
                   loginTextField(
                     controller: emailController,
-                    hintText: 'Username',
+                    hintText: 'Emaily',
                     obscureText: false,
                   ),
                   //password

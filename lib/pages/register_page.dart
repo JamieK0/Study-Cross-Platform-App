@@ -113,7 +113,7 @@ class _registerPageState extends State<registerPage> {
                   // username
                   loginTextField(
                     controller: emailController,
-                    hintText: 'Username',
+                    hintText: 'Email',
                     obscureText: false,
                   ),
                   //password

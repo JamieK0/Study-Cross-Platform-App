@@ -3,10 +3,6 @@
 <plist version="1.0">
 <dict>
 
-<key>GIDClientID</key>
-<!-- TODO Replace this value: -->
-<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
-<string>833078639-nt6ab6kbdvr5v5cbalapkrenhd36uf0b.apps.googleusercontent.com</string>
 
 <!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
 <!-- Google Sign-in Section -->
