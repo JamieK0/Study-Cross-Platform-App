@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:study/pages/first_page.dart';
 import 'package:study/pages/home_page.dart';
 import 'package:study/pages/settings_page.dart';
+import 'pages/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,11 +17,12 @@ List names = ["jamie", "nish", "henry"];
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirstPage(),
+      home: LoginPage(),
       routes: {
         '/firstpage' : (context) => FirstPage(),
         '/homepage' : (context) => HomePage(),
-        '/settingspage' :(context) => SettingsPage()
+        '/settingspage' :(context) => SettingsPage(),
+        '/loginpage' : (context) => LoginPage(),
       }
       );
   }
