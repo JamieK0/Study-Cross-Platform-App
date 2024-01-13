@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study/pages/home_page.dart';
 import 'package:study/pages/profile_page.dart';
@@ -21,7 +22,11 @@ void _navigateBottomBar (int index) {
   });
 }
 
-// pages in the app
+void signUserOut () {
+  FirebaseAuth.instance.signOut();
+}
+
+// pages in the app for the app bar I think
 final List _pages = [
   //homepage
   HomePage(),
@@ -62,6 +67,11 @@ final List _pages = [
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/settingspage');
                 }
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text("Log Out"),
+                onTap: signUserOut,
               )
           ]
         )

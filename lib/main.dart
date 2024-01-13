@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:study/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:study/pages/auth_page.dart';
+
 import 'package:study/pages/first_page.dart';
 import 'package:study/pages/home_page.dart';
 import 'package:study/pages/settings_page.dart';
 import 'pages/login_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(MyApp());
 }
 
@@ -17,12 +25,13 @@ List names = ["jamie", "nish", "henry"];
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: AuthPage(),
       routes: {
         '/firstpage' : (context) => FirstPage(),
         '/homepage' : (context) => HomePage(),
         '/settingspage' :(context) => SettingsPage(),
         '/loginpage' : (context) => LoginPage(),
+        '/authpage' :(context) => AuthPage(),
       }
       );
   }
