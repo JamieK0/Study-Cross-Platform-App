@@ -1,27 +1,28 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:study/components/default_button.dart';
 import 'package:study/components/login_text_field.dart';
 import 'package:study/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class registerPage extends StatefulWidget {
   // sign up button function
   final Function()? onTap;
-  LoginPage({super.key, required this.onTap});
+  registerPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<registerPage> createState() => _registerPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _registerPageState extends State<registerPage> {
 // text editing controllers
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-// Sign in
-  void signIn() async {
+// Sign up
+  void signUp() async {
     // Show loading circle
     showDialog(
         context: context,
@@ -33,34 +34,66 @@ class _LoginPageState extends State<LoginPage> {
           );
         });
 
-    // Sign in
+    // Sign up
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      // remove loading circle
-      Navigator.pop(context);
+      // check if both passwords given match
+      if (confirmPasswordController.text == passwordController.text) {
+        UserCredential? userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // create a user document for Firebase
+        createUserDocument(userCredential);
+        if (context.mounted) Navigator.pop(context);
+      } else {
+// remove loading circle
+        Navigator.pop(context);
+        // wrong login details
+        wrongLoginDetails("Passwords don't match");
+      }
     } on FirebaseAuthException catch (e) {
       // remove loading circle
       Navigator.pop(context);
-      // wrong login details
-      wrongLoginDetails();
+      // errors
+      switch (e.code) {
+        case "weak-password":
+          wrongLoginDetails('The password must be 8 characters in length.');
+          break;
+        case "email-already-in-use":
+          wrongLoginDetails('The account already exists for that email.');
+          break;
+        case "invalid-email":
+          wrongLoginDetails('The email provided is invalid.');
+        default:
+          wrongLoginDetails(e.code);
+      }
     }
   }
 
-  void wrongLoginDetails() {
+// create user document and store in firestore
+  Future<void> createUserDocument(UserCredential? userCredential) async {
+    if (userCredential != null && userCredential.user != null) {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({'email': userCredential.user!.email});
+    }
+  }
+
+  void wrongLoginDetails(String text) {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          title: Text(
-            'Incorrect login details'),
-        );
+        return AlertDialog(
+            title: Text(
+          text,
+          style: TextStyle(fontSize: 20),
+        ));
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,21 +111,22 @@ class _LoginPageState extends State<LoginPage> {
                     size: 100,
                     color: Color.fromARGB(255, 46, 125, 50),
                   ),
-              
+
                   // welcome text
                   const SizedBox(
                     height: 20,
                   ),
-                  Text("Welcome to Study", style: TextStyle(fontSize: 26)),
-              
+                  Text("Let's Create an Account",
+                      style: TextStyle(fontSize: 26)),
+
                   const SizedBox(
                     height: 20,
                   ),
-              
+
                   // username
                   loginTextField(
                     controller: emailController,
-                    hintText: 'Emaily',
+                    hintText: 'Email',
                     obscureText: false,
                   ),
                   //password
@@ -101,38 +135,34 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Password',
                     obscureText: true,
                   ),
-                  // forgot password
-                  const Padding(
-                    padding: const EdgeInsets.only(right: 20, top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('Forgot Password'),
-                      ],
-                    ),
+                  // confirm password
+                  loginTextField(
+                    controller: confirmPasswordController,
+                    hintText: 'Confirm Password',
+                    obscureText: true,
                   ),
-              
+
                   const SizedBox(
                     height: 20,
                   ),
-              
+
                   // sign in button
                   defaultButton(
-                    text: "Sign In",
-                    onTap: signIn,
+                    text: "Sign Up",
+                    onTap: signUp,
                   ),
-              
+
                   const SizedBox(
                     height: 20,
                   ),
-              
+
                   // sign up
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: widget.onTap,
-                        child: Text("Not a member? Sign up now",
+                        child: Text("Already a member? Sign in now",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -141,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ],
                   ),
-              
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -173,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                   // sign in with google
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     GestureDetector(
-                      onTap:() => AuthService().signInWithGoogle(),
+                      onTap: () => AuthService().signInWithGoogle(),
                       child: Image.asset(
                         'lib/images/google-signin-assets/iOS/png@4x/neutral/ios_neutral_sq_ctn@4x.png',
                         height: 62,

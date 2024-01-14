@@ -1,27 +1,26 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study/components/default_button.dart';
 import 'package:study/components/login_text_field.dart';
 import 'package:study/services/auth_service.dart';
 
-class registerPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   // sign up button function
   final Function()? onTap;
-  registerPage({super.key, required this.onTap});
+  LoginPage({super.key, required this.onTap});
 
   @override
-  State<registerPage> createState() => _registerPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _registerPageState extends State<registerPage> {
+class _LoginPageState extends State<LoginPage> {
 // text editing controllers
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
 
-// Sign up
-  void signUp() async {
+  final passwordController = TextEditingController();
+
+// Sign in
+  void signIn() async {
     // Show loading circle
     showDialog(
         context: context,
@@ -33,50 +32,30 @@ class _registerPageState extends State<registerPage> {
           );
         });
 
-    // Sign up
+    // Sign in
     try {
-      // check if both passwords given match
-      if (confirmPasswordController.text == passwordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        Navigator.pop(context);
-      } else {
-// remove loading circle
-        Navigator.pop(context);
-        // wrong login details
-        wrongLoginDetails("Passwords don't match");
-      }
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // remove loading circle
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // remove loading circle
       Navigator.pop(context);
-      // errors
-      switch (e.code) {
-        case "weak-password":
-          wrongLoginDetails('The password must be 8 characters in length.');
-          break;
-        case "email-already-in-use":
-        wrongLoginDetails('The account already exists for that email.');
-        break;
-        case "invalid-email":
-        wrongLoginDetails('The email provided is invalid.');
-        default:
-        wrongLoginDetails(e.code);
-      }
-
+      // wrong login details
+      wrongLoginDetails();
     }
   }
 
-  void wrongLoginDetails(String text) {
+  void wrongLoginDetails() {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-            title: Text(
-          text,
-          style: TextStyle(fontSize: 20),
-        ));
+        return const AlertDialog(
+          title: Text(
+            'Incorrect login details'),
+        );
       },
     );
   }
@@ -98,18 +77,17 @@ class _registerPageState extends State<registerPage> {
                     size: 100,
                     color: Color.fromARGB(255, 46, 125, 50),
                   ),
-
+              
                   // welcome text
                   const SizedBox(
                     height: 20,
                   ),
-                  Text("Let's Create an Account",
-                      style: TextStyle(fontSize: 26)),
-
+                  Text("Welcome to Study", style: TextStyle(fontSize: 26)),
+              
                   const SizedBox(
                     height: 20,
                   ),
-
+              
                   // username
                   loginTextField(
                     controller: emailController,
@@ -122,34 +100,41 @@ class _registerPageState extends State<registerPage> {
                     hintText: 'Password',
                     obscureText: true,
                   ),
-                  // confirm password
-                  loginTextField(
-                    controller: confirmPasswordController,
-                    hintText: 'Confirm Password',
-                    obscureText: true,
+                  // forgot password
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, '/forgotpasswordpage'),
+                    child: const Padding(
+                      padding: const EdgeInsets.only(right: 20, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('Forgot Password'),
+                        ],
+                      ),
+                    ),
                   ),
-
+              
                   const SizedBox(
                     height: 20,
                   ),
-
+              
                   // sign in button
                   defaultButton(
-                    text: "Sign Up",
-                    onTap: signUp,
+                    text: "Sign In",
+                    onTap: signIn,
                   ),
-
+              
                   const SizedBox(
                     height: 20,
                   ),
-
+              
                   // sign up
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: widget.onTap,
-                        child: Text("Already a member? Sign in now",
+                        child: Text("Not a member? Sign up now",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -158,7 +143,7 @@ class _registerPageState extends State<registerPage> {
                       )
                     ],
                   ),
-
+              
                   const SizedBox(
                     height: 20,
                   ),
@@ -190,7 +175,7 @@ class _registerPageState extends State<registerPage> {
                   // sign in with google
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     GestureDetector(
-                      onTap: () => AuthService().signInWithGoogle(),
+                      onTap:() => AuthService().signInWithGoogle(),
                       child: Image.asset(
                         'lib/images/google-signin-assets/iOS/png@4x/neutral/ios_neutral_sq_ctn@4x.png',
                         height: 62,
