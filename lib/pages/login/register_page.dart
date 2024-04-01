@@ -17,6 +17,7 @@ class registerPage extends StatefulWidget {
 
 class _registerPageState extends State<registerPage> {
 // text editing controllers
+  final userController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -45,7 +46,7 @@ class _registerPageState extends State<registerPage> {
         );
 
         // create a user document for Firebase
-        createUserDocument(userCredential);
+        createUserDocument(userCredential, userController);
         if (context.mounted) Navigator.pop(context);
       } else {
 // remove loading circle
@@ -73,12 +74,16 @@ class _registerPageState extends State<registerPage> {
   }
 
 // create user document and store in firestore
-  Future<void> createUserDocument(UserCredential? userCredential) async {
+  Future<void> createUserDocument(UserCredential? userCredential, userController) async {
     if (userCredential != null && userCredential.user != null) {
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(userCredential.user!.email)
-          .set({'email': userCredential.user!.email});
+          .set({
+        'email': userCredential.user!.email,
+        'username': userController.text,
+        'creation': Timestamp.now()
+      });
     }
   }
 
@@ -124,6 +129,13 @@ class _registerPageState extends State<registerPage> {
                   ),
 
                   // username
+                  loginTextField(
+                    controller: userController,
+                    hintText: 'Username',
+                    obscureText: false,
+                  ),
+                  // email
+
                   loginTextField(
                     controller: emailController,
                     hintText: 'Email',
